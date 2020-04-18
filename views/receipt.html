@@ -1,0 +1,112 @@
+<html>
+    <head>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <link rel="stylesheet" href="/receiptcss.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    </head>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-3">
+            <div class="form_main">
+                    <h4 class="heading"><strong>RECEIPT </strong> DETAILS <span></span></h4>
+                    <div class="form">
+                    <form action="/generateForm" method='POST' id="receiptFrm" name="receiptFrm">
+                        <input type="text" required="" placeholder="Please input Customer Name" value="" name="cname" class="txt">
+                        <input type="text" required="" placeholder="Please input Customer ID" value="" name="cid" class="txt">
+                        <input type="email" required="" placeholder="Please input Customer Email" value="" name="cemail" class="txt">
+                        <input type="text" required="" placeholder="Please input Customer Ph.No" value="" name="cphno" class="txt">
+                        <textarea placeholder="Please input Customer Address" name="caddress" type="text" class="txt_3"></textarea>                        
+                        <input type="text" required="" placeholder="Please input Invoice No" value="" name="invoiceno" class="txt">
+                        <input type="text" required="" placeholder="Please input Invoice Created Date" value="" name="createddate" class="txt">
+                        <hr>
+                        <div>
+                            <span>
+                                    <label>No. of Items Purchased: </label>
+                                    <input type="text" id="fieldno" />
+                                    <button type="button" onclick="addTable()" class="txt2">Create Fields</button>
+                            </span>
+                        </div>
+                        <br>
+                        <div id="receiptFields">
+
+                        </div>    
+                        <hr>
+                        <center><input type="submit" value="Generate Receipt" name="submit" class="txt2"></center>
+                    </form>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        function addTable() {
+            var units = $("#fieldno").val();
+            var myTableDiv = document.getElementById("receiptFields");
+
+            var table = document.createElement('TABLE');
+            table.className = "tableBorder";
+            //table.border = '1';
+
+            var tableBody = document.createElement('TBODY');
+            table.appendChild(tableBody);
+
+            var tr = document.createElement('TR');
+            tableBody.appendChild(tr);
+
+            var th = document.createElement('TH');
+            th.width = '250';
+            th.className = "tableField";
+            th.appendChild(document.createTextNode("Item"));
+            tr.appendChild(th);
+            th = document.createElement('TH');
+            th.width = '250';
+            th.className = "tableField";
+            th.appendChild(document.createTextNode("Quantity"));
+            tr.appendChild(th);
+            th = document.createElement('TH');
+            th.width = '250';
+            th.className = "tableField";
+            th.appendChild(document.createTextNode("Unit Price"));
+            tr.appendChild(th);
+            th = document.createElement('TH');
+            th.width = '250';
+            th.className = "tableField";
+            th.appendChild(document.createTextNode("Total"));
+            tr.appendChild(th);
+            
+            for (var i = 0; i < units; i++) {
+                tr = document.createElement('TR');
+                tableBody.appendChild(tr);
+
+                for (var j = 0; j < 4; j++) {
+                    var td = document.createElement('TD');
+                    td.width = '250';
+                    td.className = "tableField";
+                    var tid = document.createElement("input");
+                    tid.id = "data" + i + j;
+                    td.appendChild(tid);
+                    tr.appendChild(td);
+                }
+            } 
+            myTableDiv.appendChild(table);
+        }
+        
+ 
+        /*
+        function generateFields() {
+            var units = $("#fieldno").val();
+            for (var count = 0; count < units; count++) {
+                $("<input/><br>").attr({
+                    type: 'text',
+                    name: 'text' + count,
+                    id: 'text' + count,
+                    value: '',
+                    class: 'txt'
+                }).appendTo("#receiptFields");
+            }
+        }*/
+
+    </script>
+</html>
