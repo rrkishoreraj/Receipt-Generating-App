@@ -50,17 +50,6 @@ $(document).ready(function () {
   }
 });
 
-function calculateTotal(i, j) {
-  console.log("i: ", i);
-  console.log("j: ", j);
-  let unitPrice = document.getElementById("data" + i + j).value;
-  j -= 1;
-  let quantity = document.getElementById("data" + i + j).value;
-  j += 2;
-  let total = document.getElementById("data" + i + j);
-  total.value = (float(unitPrice) * Number(quantity)).toFixed(2);
-}
-
 function addTable() {
   var fields = ["Item", "Quantity", "Unit Price", "Total"];
   var units = $("#fieldno").val();
@@ -120,6 +109,7 @@ function addTable() {
     }*/
 
 function getReceiptData() {
+  let id = Number(sessionStorage.getItem("id"));
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.onreadystatechange = () => {
     if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -177,11 +167,75 @@ function getReceiptData() {
       }
     }
   };
-  xmlhttp.open("GET", "/getReceiptDetail", true);
+  if (id) {
+    let data = new FormData();
+    data.append("id", id);
+    xmlhttp.open("POST", "/getReceiptDetail", true);
+    xmlhttp.send(data);
+    sessionStorage.removeItem("id");
+  } else {
+    xmlhttp.open("GET", "/getReceiptDetail", true);
+    xmlhttp.send();
+  }
+  xmlhttp.onerror = () => {
+    alert("Connection Failed!...Please Check Your Internet Connection");
+  };
+}
+
+function getAllReceipts() {
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.onreadystatechange = () => {
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+      if (xmlhttp.responseText) {
+        var result = JSON.parse(xmlhttp.responseText);
+        console.log(result);
+        let tBody = document.createElement("tbody");
+        let tRow;
+        for (let i = 0; i < result.length; i++) {
+          tRow = document.createElement("tr");
+          let tData = document.createElement("td");
+          tData.innerHTML = result[i].receiptNo;
+          tRow.appendChild(tData);
+          tData = document.createElement("td");
+          tData.innerHTML = result[i].custName;
+          tRow.appendChild(tData);
+          tData = document.createElement("td");
+          tData.innerHTML =
+            new Date(result[i].createdAt).toDateString() +
+            "<br />" +
+            new Date(result[i].createdAt).toLocaleTimeString();
+          tRow.appendChild(tData);
+          tData = document.createElement("td");
+          tData.classList.add("text-right");
+          let button = document.createElement("button");
+          button.classList.add("btn", "btn-sm", "btn-danger");
+          button.onclick = function () {
+            viewPDF(result[i].receiptNo);
+          };
+          let pdfIcon = document.createElement("i");
+          pdfIcon.classList.add("fa", "fa-file-pdf-o");
+          pdfIcon.style.fontSize = "30px";
+          button.appendChild(pdfIcon);
+          tData.appendChild(button);
+          tRow.appendChild(tData);
+          tData = document.createElement("td");
+          tRow.appendChild(tData);
+          tBody.appendChild(tRow);
+        }
+        document.getElementById("table").appendChild(tBody);
+      }
+    }
+  };
+  xmlhttp.open("GET", "/getAllReceipts", true);
   xmlhttp.send();
   xmlhttp.onerror = () => {
     alert("Connection Failed!...Please Check Your Internet Connection");
   };
+}
+
+function viewPDF(id) {
+  sessionStorage.setItem("id", id);
+  window.location = "http://localhost:5000/generatedReceipt";
 }
 
 function ExportPdf() {

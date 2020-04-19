@@ -5,11 +5,13 @@ var mongoose = require("mongoose");
 var schema = require("./models/schema.js");
 const path = require("path");
 var bodyParser = require("body-parser");
+const formidable = require("express-formidable");
 
 mongoose.connect(
   "mongodb+srv://admin:admin@cluster0-i73d8.mongodb.net/GeneratedReceipt?retryWrites=true&w=majority"
 );
 
+app.use(formidable());
 app.use(morgan("combined"));
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -24,9 +26,9 @@ app.get("/", (req, res) => {
 
 app.post("/login", (req, res) => {
   if (
-    req.body.name == "admin" &&
-    req.body.email == "admin@ad.com" &&
-    req.body.password == "admin"
+    req.fields.name == "admin" &&
+    req.fields.email == "admin@ad.com" &&
+    req.fields.password == "admin"
   ) {
     res.redirect("/receipt");
   } else {
@@ -93,8 +95,8 @@ app.get("/generatedReceipt", (req, res) => {
 });
 
 app.get("/getReceiptDetail", (req, res) => {
-  console.log("-------------------------------------");
   var dbmodel = mongoose.model("vendordetails", schema);
+
   dbmodel
     .find({}, (err, result) => {
       if (err) {
@@ -108,8 +110,34 @@ app.get("/getReceiptDetail", (req, res) => {
     .limit(1);
 });
 
+app.post("/getReceiptDetail", (req, res) => {
+  var dbmodel = mongoose.model("vendordetails", schema);
+  id = Number(req.fields.id);
+  console.log(req.fields);
+  dbmodel.find({ receiptNo: id }, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(result);
+      res.send(result);
+    }
+  });
+});
+
 app.get("/allReceipts", (req, res) => {
   res.sendFile(path.join(__dirname + "/views" + "/allreceipts.html"));
+});
+
+app.get("/getAllReceipts", (req, res) => {
+  var dbmodel = mongoose.model("vendordetails", schema);
+
+  dbmodel.find({}, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.status(200).send(result);
+    }
+  });
 });
 
 app.listen(5000, () => {
