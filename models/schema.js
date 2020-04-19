@@ -16,6 +16,10 @@ var dataSchema = mongoose.Schema({
   paymentMode: String,
   noOfItems: Number,
   purchasedItems: Array,
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 /*

@@ -108,6 +108,10 @@ app.get("/getReceiptDetail", (req, res) => {
     .limit(1);
 });
 
+app.get("/allReceipts", (req, res) => {
+  res.sendFile(path.join(__dirname + "/views" + "/allreceipts.html"));
+});
+
 app.listen(5000, () => {
   console.log("Server is up and listening on port 5000...");
 });
