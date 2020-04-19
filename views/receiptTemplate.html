@@ -1,0 +1,130 @@
+<html>
+  <head>
+    <link
+      href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+      rel="stylesheet"
+      id="bootstrap-css"
+    />
+    <link rel="stylesheet" href="/receiptTemplate.css" />
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/script.js"></script>
+
+    <script src="https://kendo.cdn.telerik.com/2017.2.621/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2017.2.621/js/jszip.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2017.2.621/js/kendo.all.min.js"></script>
+  </head>
+  <body onload="getReceiptData()">
+    <div class="container">
+      <div id="invoice">
+        <div class="toolbar hidden-print">
+          <div class="text-right">
+            <button
+              id="printInvoice"
+              class="btn btn-info"
+              onclick="window.print()"
+            >
+              <i class="fa fa-print"></i> Print
+            </button>
+            <button class="btn btn-info" onclick="ExportPdf()">
+              <i class="fa fa-file-pdf-o"></i> Export as PDF
+            </button>
+          </div>
+          <hr />
+        </div>
+        <div class="invoice overflow-auto" id="receipt">
+          <div style="min-width: 600px;">
+            <header>
+              <div class="row">
+                <div class="col">
+                  <a href="#">
+                    <img
+                      src="http://lobianijs.com/lobiadmin/version/1.0/ajax/img/logo/lobiadmin-logo-text-64.png"
+                      data-holder-rendered="true"
+                    />
+                  </a>
+                </div>
+                <div class="col company-details">
+                  <h2 class="name">
+                    <a target="_blank" href="https://lobianijs.com">
+                      KGiSL
+                    </a>
+                  </h2>
+                  <div>
+                    365, Thudiyalur Rd, Saravanampatti, Coimbatore, Tamil Nadu
+                    641035
+                  </div>
+                  <div>0422 441 9999</div>
+                  <div>company@example.com</div>
+                </div>
+              </div>
+            </header>
+            <main>
+              <div class="row contacts">
+                <div class="col invoice-to">
+                  <div class="text-gray-light">
+                    INVOICE NO: <span id="invoiceNo"></span>
+                  </div>
+                  <div class="text-gray-light">INVOICE TO:</div>
+                  <h2 class="to" id="name"></h2>
+                  <div class="address" id="address"></div>
+                  <div class="email">
+                    <a href="#" id="email"></a>
+                  </div>
+                </div>
+                <div class="col invoice-details">
+                  <h1 class="invoice-id">
+                    RECEIPT NO: <span id="receiptNo"></span>
+                  </h1>
+                  <div class="date">
+                    Date of Invoice: <span id="createdAt"></span>
+                  </div>
+                  <div class="date">Paid On: <span id="paidOn"></span></div>
+                </div>
+              </div>
+              <table border="0" cellspacing="0" cellpadding="0" id="table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th class="text-left">ITEM</th>
+                    <th class="text-right">QUANTITY</th>
+                    <th class="text-right">UNIT PRICE</th>
+                    <th class="text-right">TOTAL</th>
+                  </tr>
+                </thead>
+                <!--<tbody>
+                  <tr>
+                    <td class="no" id="no"></td>
+                    <td class="text-left">
+                      <h3 id="item"></h3>
+                    </td>
+                    <td class="unit" id="quantity"></td>
+                    <td class="qty">Rs. <span id="unitPrice"></span></td>
+                    <td class="total">Rs. <span id="total"></span></td>
+                  </tr>
+                </tbody>-->
+                <tfoot>
+                  <tr>
+                    <td colspan="2"></td>
+                    <td colspan="2">GRAND TOTAL</td>
+                    <td>Rs.<span id="grandTotal"></span></td>
+                  </tr>
+                </tfoot>
+              </table>
+              <div class="notices">
+                <b><i>Payment Mode: </i></b><span id="paymentMode"></span>
+              </div>
+              <div class="thanks">Thank you!</div>
+            </main>
+            <footer>
+              Receipt was created on a computer and is valid without the
+              signature and seal.
+            </footer>
+          </div>
+          <!--DO NOT DELETE THIS div. IT is responsible for showing footer always at the bottom-->
+          <div></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

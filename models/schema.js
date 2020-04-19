@@ -1,31 +1,35 @@
-var mongoose = require('mongoose')
-require('mongoose-double')(mongoose);
+var mongoose = require("mongoose");
+require("mongoose-double")(mongoose);
 
 var SchemaTypes = mongoose.Schema.Types;
-/*
+
 var dataSchema = mongoose.Schema({
-    custname: String,
-    custid: Number,
-    custmail: String,
-    custphno: Number,
-    custaddr: String,
-    invoiceno: Number,
-    invoicecreated: Date,
-    purchaseditems: {
-        item: String,
-        quantity: Number,
-        unitprice: SchemaTypes.Double,
-        total: SchemaTypes.Double
-    }
+  custName: String,
+  custId: Number,
+  custMail: String,
+  custPhno: Number,
+  custAddr: String,
+  invoiceNo: Number,
+  receiptNo: Number,
+  invoiceCreated: Date,
+  paidOn: Date,
+  paymentMode: String,
+  noOfItems: Number,
+  purchasedItems: Array,
+});
 
-})
-*/
-
+/*
 var dataSchema = mongoose.Schema({
     name: String
 })
 
-
+{
+    item: String,
+    quantity: Number,
+    unitPrice: SchemaTypes.Double,
+    total: SchemaTypes.Double,
+  },
+*/
 
 //var dataModel = mongoose.model('', dataSchema)
-module.exports = dataSchema;    
+module.exports = dataSchema;

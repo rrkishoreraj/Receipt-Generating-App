@@ -1,42 +1,74 @@
 <html>
-    <head>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <link rel="stylesheet" type="text/css" href="/style.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-        <script src="/script.js"></script>
-    </head>
-    <div class="container">
-        <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">                        
-                <h1>Receipt Generating App</h1>
-                </div>
-        </div>        
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">                        
-            <h2><i>Login</i></h2>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-3">
-                <form id="contact-form" class="form" action="/login" method='POST' role="form">
-                    <div class="form-group">
-                        <label class="form-label" for="name">Your Name</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Your name" tabindex="1" required>
-                    </div>                            
-                    <div class="form-group">
-                        <label class="form-label" for="email">Your Email</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="Your Email" tabindex="2" required>
-                    </div>                            
-                    <div class="form-group">
-                            <label class="form-label" for="email">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Your Password" tabindex="2" required>
-                    </div>                                
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-start-order">Log in</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+  <head>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="/script.js"></script>
+  </head>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+        <h1>Receipt Generating App</h1>
+      </div>
     </div>
-
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+        <h2><i>Login</i></h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-3">
+        <form
+          id="contact-form"
+          class="form"
+          action="/login"
+          method="POST"
+          role="form"
+        >
+          <div class="form-group">
+            <label class="form-label" for="name">Your Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              name="name"
+              placeholder="Your name"
+              tabindex="1"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="email">Your Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              name="email"
+              placeholder="Your Email"
+              tabindex="2"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="email">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              name="password"
+              placeholder="Your Password"
+              tabindex="2"
+              required
+            />
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-start-order">Log in</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </html>
