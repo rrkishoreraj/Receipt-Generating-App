@@ -11,7 +11,7 @@ mongoose.connect(
   "mongodb+srv://admin:admin@cluster0-i73d8.mongodb.net/GeneratedReceipt?retryWrites=true&w=majority"
 );
 
-app.use(formidable());
+//app.use(formidable());
 app.use(morgan("combined"));
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -20,16 +20,20 @@ app.use(bodyParser.json());
 app.set("view engine", "html");
 app.use(express.static(__dirname + "/public"));
 
+let userMail;
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname + "/views" + "/index.html"));
 });
 
 app.post("/login", (req, res) => {
+  console.log("Login");
   if (
-    req.fields.name == "admin" &&
-    req.fields.email == "admin@ad.com" &&
-    req.fields.password == "admin"
+    req.body.name == "admin" &&
+    req.body.email == "admin@ad.com" &&
+    req.body.password == "admin"
   ) {
+    userMail = req.body.email;
     res.redirect("/receipt");
   } else {
     res.send("Invalid Credentials Entered");
@@ -110,10 +114,10 @@ app.get("/getReceiptDetail", (req, res) => {
     .limit(1);
 });
 
-app.post("/getReceiptDetail", (req, res) => {
+app.post("/viewReceipt", (req, res) => {
   var dbmodel = mongoose.model("vendordetails", schema);
-  id = Number(req.fields.id);
-  console.log(req.fields);
+  let id = req.body.id;
+
   dbmodel.find({ receiptNo: id }, (err, result) => {
     if (err) {
       console.log(err);

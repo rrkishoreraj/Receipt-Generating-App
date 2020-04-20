@@ -168,9 +168,12 @@ function getReceiptData() {
     }
   };
   if (id) {
-    let data = new FormData();
-    data.append("id", id);
-    xmlhttp.open("POST", "/getReceiptDetail", true);
+    let data = JSON.stringify({
+      id: id,
+    });
+
+    xmlhttp.open("POST", "/viewReceipt", true);
+    xmlhttp.setRequestHeader("Content-type", "application/json; charset=utf-8");
     xmlhttp.send(data);
     sessionStorage.removeItem("id");
   } else {
