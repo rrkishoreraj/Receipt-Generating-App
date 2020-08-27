@@ -8,7 +8,7 @@ var bodyParser = require("body-parser");
 const formidable = require("express-formidable");
 
 mongoose.connect(
-  "mongodb+srv://admin:admin@cluster0-i73d8.mongodb.net/GeneratedReceipt?retryWrites=true&w=majority"
+  "mongodb+srv://"+process.env.USERNAME+":"+process.env.PASSWORD+"@cluster0-i73d8.mongodb.net/GeneratedReceipt?retryWrites=true&w=majority"
 );
 
 //app.use(formidable());
@@ -29,6 +29,9 @@ const authenticate = () => {
 };
 
 app.get("/", (req, res) => {
+    if (authenticate()) {
+    res.redirect("/receipt");
+  }
   res.sendFile(path.join(__dirname + "/views" + "/index.html"));
 });
 
@@ -185,6 +188,6 @@ app.get("/getAllReceipts", (req, res) => {
   }
 });
 
-app.listen(5000, () => {
+app.listen(process.env.PORT, () => {
   console.log("Server is up and listening on port 5000...");
 });
