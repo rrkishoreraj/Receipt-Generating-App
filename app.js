@@ -22,25 +22,35 @@ app.use(express.static(__dirname + "/public"));
 
 let user, userMail, password;
 
-const authenticate = () => {
-  return user === "admin" && userMail === "admin@ad.com" && password === "admin"
-    ? true
-    : false;
+const authenticate = (req, res, next) => {
+  if (user === process.env.USER && userMail === process.env.MAIL && password === process.env.PASSWORD) next()
+  else res.redirect("/")
 };
 
-app.get("/", (req, res) => {
-    if (authenticate()) {
+//User Authentication Middleware
+
+app.get("/receipt", (req, res, next)  => {authenticate(req, res, next)});
+app.post("/generateForm", (req, res, next)  => {authenticate(req, res, next)});
+app.get("/generatedReceipt", (req, res, next)  => {authenticate(req, res, next)});
+app.get("/getReceiptDetail", (req, res, next)  => {authenticate(req, res, next)});
+app.post("/viewReceipt", (req, res, next)  => {authenticate(req, res, next)});
+app.get("/allReceipts", (req, res, next)  => {authenticate(req, res, next)});
+app.get("/getAllReceipts", (req, res, next)  => {authenticate(req, res, next)});
+
+
+app.get("/", (req, res, next) => {
+  if (user === process.env.USER && userMail === process.env.MAIL && password === process.env.PASSWORD) next()
+  else res.sendFile(path.join(__dirname + "/views" + "/index.html"))
+}, (req, res) => {
     res.redirect("/receipt");
-  }
-  res.sendFile(path.join(__dirname + "/views" + "/index.html"));
 });
 
 app.post("/login", (req, res) => {
   console.log("Login");
   if (
-    req.body.name === "admin" &&
-    req.body.email === "admin@ad.com" &&
-    req.body.password === "admin"
+    req.body.name === process.env.USER &&
+    req.body.email === process.env.MAIL &&
+    req.body.password === process.env.PASSWORD
   ) {
     user = req.body.name;
     userMail = req.body.email;
@@ -58,15 +68,10 @@ app.get("/logout", (req, res) => {
 });
 
 app.get("/receipt", (req, res) => {
-  if (authenticate()) {
     res.sendFile(path.join(__dirname + "/views" + "/receipt.html"));
-  } else {
-    res.redirect("/");
-  }
 });
 
 app.post("/generateForm", (req, res) => {
-  if (authenticate()) {
     var dbmodel = mongoose.model("vendordetails", schema);
     var newdbModel = new dbmodel();
     newdbModel.custName = req.body.custName;
@@ -81,13 +86,23 @@ app.post("/generateForm", (req, res) => {
     newdbModel.noOfItems = req.body.noOfItems;
 
     let purchasedItems = [];
-    for (let i = 0; i < req.body.noOfItems; i++) {
+    if (Number(req.body.noOfItems) > 1) {
+      for (let i = 0; i < Number(req.body.noOfItems); i++) {
+        purchasedItems.push({
+          item: req.body.item[i],
+          quantity: Number(req.body.quantity[i]),
+          unitPrice: Number(req.body.unitPrice[i]),
+          total: Number(req.body.total[i]),
+        });
+      }
+    }
+    else {
       purchasedItems.push({
-        item: req.body.item[i],
-        quantity: Number(req.body.quantity[i]),
-        unitPrice: parseFloat(req.body.unitPrice[i]),
-        total: parseFloat(req.body.total[i]),
-      });
+          item: req.body.item,
+          quantity: Number(req.body.quantity),
+          unitPrice: Number(req.body.unitPrice),
+          total: Number(req.body.total),
+        });
     }
     newdbModel.purchasedItems.push(purchasedItems);
 
@@ -113,21 +128,13 @@ app.post("/generateForm", (req, res) => {
       })
       .sort({ _id: -1 })
       .limit(1);
-  } else {
-    res.redirect("/");
-  }
 });
 
 app.get("/generatedReceipt", (req, res) => {
-  if (authenticate()) {
     res.sendFile(path.join(__dirname + "/views" + "/receiptTemplate.html"));
-  } else {
-    res.redirect("/");
-  }
 });
 
 app.get("/getReceiptDetail", (req, res) => {
-  if (authenticate()) {
     var dbmodel = mongoose.model("vendordetails", schema);
 
     dbmodel
@@ -141,13 +148,9 @@ app.get("/getReceiptDetail", (req, res) => {
       })
       .sort({ _id: -1 })
       .limit(1);
-  } else {
-    res.redirect("/");
-  }
 });
 
 app.post("/viewReceipt", (req, res) => {
-  if (authenticate()) {
     var dbmodel = mongoose.model("vendordetails", schema);
     let id = req.body.id;
 
@@ -159,21 +162,13 @@ app.post("/viewReceipt", (req, res) => {
         res.send(result);
       }
     });
-  } else {
-    res.redirect("/");
-  }
 });
 
 app.get("/allReceipts", (req, res) => {
-  if (authenticate()) {
     res.sendFile(path.join(__dirname + "/views" + "/allreceipts.html"));
-  } else {
-    res.redirect("/");
-  }
 });
 
 app.get("/getAllReceipts", (req, res) => {
-  if (authenticate()) {
     var dbmodel = mongoose.model("vendordetails", schema);
 
     dbmodel.find({}, (err, result) => {
@@ -183,9 +178,6 @@ app.get("/getAllReceipts", (req, res) => {
         res.status(200).send(result);
       }
     });
-  } else {
-    res.redirect("/");
-  }
 });
 
 app.listen(process.env.PORT, () => {
