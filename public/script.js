@@ -50,10 +50,18 @@ $(document).ready(function () {
   }
 });
 
+function calculateTotal(input) {
+  var quantity = document.getElementById("data"+input.id[4]+"1");
+  var unitPrice = document.getElementById("data"+input.id[4]+"2");
+  var total = document.getElementById("data"+input.id[4]+"3");
+  total.value = Number(quantity.value) * Number(unitPrice.value);
+}
+
 function addTable() {
   var fields = ["Item", "Quantity", "Unit Price", "Total"];
   var units = $("#fieldno").val();
   var myTableDiv = document.getElementById("receiptFields");
+  myTableDiv.innerHTML = "";
 
   var table = document.createElement("TABLE");
   table.className = "tableBorder";
@@ -85,7 +93,20 @@ function addTable() {
       var tid = document.createElement("input");
       tid.name = fields[j];
       tid.id = "data" + i + j;
-      tid.type = "text";
+      if (j == 2 || j== 3){ 
+        tid.type = "number";
+        tid.step = "0.01";
+        tid.min = "0";
+        if (j == 2) { tid.addEventListener('keyup', function(){calculateTotal(this)}); }
+        if (j == 3) { tid.readOnly = true; }
+      }
+      else if (j == 1) {
+        tid.type = "number";
+        tid.min = "0";
+      }
+      else {
+        tid.type = "text";
+      }
       tid.required = true;
       td.appendChild(tid);
       tr.appendChild(td);
@@ -238,7 +259,7 @@ function getAllReceipts() {
 
 function viewPDF(id) {
   sessionStorage.setItem("id", id);
-  window.location = "http://localhost:5000/generatedReceipt";
+  window.location = "https://receipt-generating-app.glitch.me/generatedReceipt";
 }
 
 function ExportPdf() {
