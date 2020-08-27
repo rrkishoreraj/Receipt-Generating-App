@@ -44,6 +44,7 @@
                 required=""
                 placeholder="Please input Customer ID"
                 value=""
+                min="0"
                 name="custId"
                 class="txt"
               />
@@ -75,6 +76,7 @@
                 required=""
                 placeholder="Please input Invoice No"
                 value=""
+                min="0"
                 name="invoiceNo"
                 class="txt"
               />
@@ -119,7 +121,7 @@
               <div>
                 <span>
                   <label>No. of Items Purchased: </label>
-                  <input type="number" id="fieldno" name="noOfItems" />
+                  <input type="number" id="fieldno" name="noOfItems" min="0" />
                   <button type="button" onclick="addTable()" class="txt2">
                     Create Fields
                   </button>
